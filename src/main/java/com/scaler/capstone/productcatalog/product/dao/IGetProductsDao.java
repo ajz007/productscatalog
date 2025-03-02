@@ -1,4 +1,4 @@
-package com.scaler.capstone.productcatalog.product.model.dao;
+package com.scaler.capstone.productcatalog.product.dao;
 
 import com.scaler.capstone.productcatalog.product.model.Product;
 

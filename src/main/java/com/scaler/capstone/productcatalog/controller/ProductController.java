@@ -2,10 +2,8 @@ package com.scaler.capstone.productcatalog.controller;
 
 import com.scaler.capstone.productcatalog.product.model.Category;
 import com.scaler.capstone.productcatalog.product.model.Product;
-import com.scaler.capstone.productcatalog.product.model.service.ProductReadService;
-import com.scaler.capstone.productcatalog.product.model.service.ProductWriteService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.scaler.capstone.productcatalog.product.service.ProductReadService;
+import com.scaler.capstone.productcatalog.product.service.ProductWriteService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -58,6 +56,7 @@ public class ProductController {
 
     @PostMapping("/products")
     public Product addProduct(@RequestBody Product product) {
+        productWriteService.create(product);
         return product;
     }
 

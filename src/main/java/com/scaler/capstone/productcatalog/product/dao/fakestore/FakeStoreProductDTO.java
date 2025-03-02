@@ -1,6 +1,5 @@
-package com.scaler.capstone.productcatalog.fakestore.dto;
+package com.scaler.capstone.productcatalog.product.dao.fakestore;
 
-import com.scaler.capstone.productcatalog.product.model.Category;
 import lombok.Builder;
 import lombok.Data;
 
