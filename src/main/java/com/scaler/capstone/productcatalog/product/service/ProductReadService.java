@@ -1,7 +1,7 @@
-package com.scaler.capstone.productcatalog.product.model.service;
+package com.scaler.capstone.productcatalog.product.service;
 
 import com.scaler.capstone.productcatalog.product.model.Product;
-import com.scaler.capstone.productcatalog.product.model.dao.IGetProductsDao;
+import com.scaler.capstone.productcatalog.product.dao.IGetProductsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

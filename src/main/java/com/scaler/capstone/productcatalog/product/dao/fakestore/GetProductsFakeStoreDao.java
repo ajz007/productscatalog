@@ -1,9 +1,7 @@
-package com.scaler.capstone.productcatalog.product.model.dao.fakestore;
+package com.scaler.capstone.productcatalog.product.dao.fakestore;
 
-import com.scaler.capstone.productcatalog.fakestore.dto.FakeStoreProductDTO;
 import com.scaler.capstone.productcatalog.product.model.Product;
-import com.scaler.capstone.productcatalog.product.model.dao.IGetProductsDao;
-import com.scaler.capstone.productcatalog.product.model.dao.Mapper;
+import com.scaler.capstone.productcatalog.product.dao.IGetProductsDao;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -54,13 +52,13 @@ public class GetProductsFakeStoreDao implements IGetProductsDao {
                 FakeStoreProductDTO[].class
                 );
 
-        return Mapper.mapToProductList(response.getBody());
+        return FakeStoreMapper.mapToProductList(response.getBody());
     }
 
     @Override
     public Product getProduct(String id) {
         var restTemplate = restTemplateBuilder.build();
         var response = restTemplate.getForEntity("https://fakestoreapi.com/products/" + id, FakeStoreProductDTO.class);
-        return Mapper.mapToProduct(response.getBody());
+        return FakeStoreMapper.mapToProduct(response.getBody());
     }
 }
