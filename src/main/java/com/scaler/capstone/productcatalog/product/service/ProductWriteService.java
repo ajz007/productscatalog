@@ -5,6 +5,7 @@ import com.scaler.capstone.productcatalog.product.dao.IUpdateProductsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductWriteService {
@@ -21,6 +22,7 @@ public class ProductWriteService {
         return product;
     }
 
+    @Transactional
     public Product create(Product product) {
         return updateProductsDao.create(product);
     }

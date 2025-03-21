@@ -28,15 +28,16 @@ public class ProductEntityMapper {
      * @return @{@link ProductEntity}
      */
     public static ProductEntity fromProduct(Product product) {
-        return ProductEntity.builder()
-                .id(product.getId())
-                .title(product.getTitle())
-                .price(product.getPrice())
-                .category(CategoryEntity.builder()
-                        .withName(product.getCategory().name())
-                        .build())
-                .description(product.getDescription())
-                .image(product.getImage())
-                .build();
+//        return ProductEntity.builder()
+//                .id(product.getId())
+//                .title(product.getTitle())
+//                .price(product.getPrice())
+//                .category(CategoryEntity.builder()
+//                        .withName(product.getCategory().name())
+//                        .build())
+//                .description(product.getDescription())
+//                .image(product.getImage())
+//                .build();
+        return new ProductEntity(product.getId(), product.getTitle(), product.getPrice(), null, product.getDescription(), product.getImage());
     }
 }
