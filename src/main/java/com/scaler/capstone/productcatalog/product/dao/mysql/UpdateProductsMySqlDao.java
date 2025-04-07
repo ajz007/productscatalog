@@ -80,7 +80,7 @@ public class UpdateProductsMySqlDao implements IUpdateProductsDao {
     @Override
     public Product create(Product product) {
         var categories = categoryRepository.getCategoryEntitiesByName(product.getCategory().name());
-        var entity = new ProductEntity(product.getId(), product.getTitle(), product.getPrice(), categories.get(0), product.getDescription(), product.getImage());
+        var entity = new ProductEntity(null, product.getTitle(), product.getPrice(), categories.get(0), product.getDescription(), product.getImage());
         var savedEntity = repository.save(entity);
         return Product.builder()
                 .withId(savedEntity.getId())
