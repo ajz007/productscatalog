@@ -1,6 +1,5 @@
-package com.scaler.capstone.productcatalog.product.model.dao;
+package com.scaler.capstone.productcatalog.product.dao.fakestore;
 
-import com.scaler.capstone.productcatalog.fakestore.dto.FakeStoreProductDTO;
 import com.scaler.capstone.productcatalog.product.model.Category;
 import com.scaler.capstone.productcatalog.product.model.Product;
 
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * Mapper Object acting as an adaptor between the Service Model and the FakeStore DTOs.
  */
-public class Mapper {
+public class FakeStoreMapper {
 
     /**
      * Map from Array {@link FakeStoreProductDTO} to Array {@link Product}
@@ -21,7 +20,7 @@ public class Mapper {
      */
     public static List<Product> mapToProductList(FakeStoreProductDTO[] fakeproducts) {
         return Arrays.stream(fakeproducts)
-                .map(Mapper::mapToProduct)
+                .map(FakeStoreMapper::mapToProduct)
                 .collect(Collectors.toList());
     }
 
