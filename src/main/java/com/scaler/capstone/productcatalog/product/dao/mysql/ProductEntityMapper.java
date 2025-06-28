@@ -24,6 +24,7 @@ public class ProductEntityMapper {
     /**
      * Convert to Product Entity.
      *
+     *
      * @param product
      * @return @{@link ProductEntity}
      */

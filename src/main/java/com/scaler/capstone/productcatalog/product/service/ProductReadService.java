@@ -3,6 +3,7 @@ package com.scaler.capstone.productcatalog.product.service;
 import com.scaler.capstone.productcatalog.product.model.Product;
 import com.scaler.capstone.productcatalog.product.dao.IGetProductsDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class ProductReadService {
     private final IGetProductsDao getProductsDao;
 
     @Autowired
-    public ProductReadService(IGetProductsDao getProductsDao) {
+    public ProductReadService(@Qualifier("getProductsMySqlDao") IGetProductsDao getProductsDao) {
         this.getProductsDao = getProductsDao;
     }
 
@@ -25,6 +26,7 @@ public class ProductReadService {
     }
 
     public Product getProducts(String id) {
+
         return getProductsDao.getProduct(id);
     }
 }

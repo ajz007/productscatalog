@@ -1,6 +1,5 @@
 package com.scaler.capstone.productcatalog.product.dao.mysql;
 
-import com.scaler.capstone.productcatalog.product.model.Category;
 import jakarta.persistence.*;
 import lombok.*;
 
