@@ -16,7 +16,7 @@ public interface IUpdateProductsDao {
      * Update the product.
      * @param product {@link Product}
      */
-    void update(Product product);
+    Product update(Product product);
 
     /**
      *

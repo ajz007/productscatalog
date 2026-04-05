@@ -17,7 +17,7 @@ public class ProductEntity {
     private String title;
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
     private String description;

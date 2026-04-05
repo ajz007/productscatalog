@@ -1,15 +1,21 @@
 package com.scaler.capstone.productcatalog.controller;
 
-import com.scaler.capstone.productcatalog.product.model.Category;
 import com.scaler.capstone.productcatalog.product.model.Product;
 import com.scaler.capstone.productcatalog.product.service.ProductReadService;
 import com.scaler.capstone.productcatalog.product.service.ProductWriteService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-@RestController("/")
+@RestController
+@RequestMapping("/products")
 public class ProductController {
 
     private final ProductReadService productReadService;
@@ -20,57 +26,28 @@ public class ProductController {
         this.productWriteService = productWriteService;
     }
 
-    @GetMapping("/products")
+    @GetMapping
     public List<Product> getProducts() {
         return productReadService.getProducts();
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/{id}")
     public Product getProduct(@PathVariable int id) {
-        return productReadService.getProducts(String.valueOf(id));
+        return productReadService.getProduct(id);
     }
 
-    @GetMapping("/products/categories")
-    public List<Product> getProductCategories() { //TODO: remove hardcoding
-        return List.of(Product.builder()
-                .withId(1)
-                .withPrice(BigDecimal.ONE)
-                .withImage("image")
-                .withCategory(Category.JEWELLERY)
-                .withDescription("description")
-                .withTitle("title")
-                .build());
-    }
-
-    @GetMapping("/products/categories/{category}")
-    public List<Product> getProductCategories(@PathVariable Category category) { //TODO: remove hardcoding
-        return List.of(Product.builder()
-                .withId(1)
-                .withPrice(BigDecimal.ONE)
-                .withImage("image")
-                .withCategory(Category.JEWELLERY)
-                .withDescription("description")
-                .withTitle("title")
-                .build());
-    }
-
-    @PostMapping("/products")
+    @PostMapping
     public Product addProduct(@RequestBody Product product) {
         return productWriteService.create(product);
     }
 
-    @PutMapping("/products/{id}")
+    @PutMapping("/{id}")
     public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
         product.setId(id);
         return productWriteService.update(product);
     }
 
-    @PatchMapping("/products/{id}")
-    public Product patchProduct(@PathVariable int id, @RequestBody Product product) {
-        return product;
-    }
-
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable int id) {
         productWriteService.delete(id);
     }

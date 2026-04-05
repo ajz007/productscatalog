@@ -4,9 +4,9 @@ import com.scaler.capstone.productcatalog.product.dao.mysql.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
-    List<CategoryEntity> getCategoryEntitiesByName(String name);
+public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
+    Optional<CategoryEntity> findByNameIgnoreCase(String name);
 }
