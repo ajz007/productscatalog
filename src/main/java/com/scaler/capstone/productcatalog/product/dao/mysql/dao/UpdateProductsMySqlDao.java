@@ -12,6 +12,8 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("mysqlUpdateProductDao")
 public class UpdateProductsMySqlDao implements IUpdateProductsDao {
 
@@ -34,6 +36,11 @@ public class UpdateProductsMySqlDao implements IUpdateProductsDao {
     }
 
     @Override
+    public void delete(int id) {
+        repository.deleteById(id);
+    }
+
+    @Override
     public Product create(Product product) {
         var categories = categoryRepository.getCategoryEntitiesByName(product.getCategory().name());
         var entity = new ProductEntity(null, product.getTitle(), product.getPrice(), categories.get(0), product.getDescription(), product.getImage());
@@ -47,4 +54,5 @@ public class UpdateProductsMySqlDao implements IUpdateProductsDao {
                 .withCategory(Category.fromString(savedEntity.getCategory().getName()))
                 .build();
     }
+
 }

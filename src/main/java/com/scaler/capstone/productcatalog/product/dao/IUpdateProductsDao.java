@@ -2,6 +2,8 @@ package com.scaler.capstone.productcatalog.product.dao;
 
 import com.scaler.capstone.productcatalog.product.model.Product;
 
+import java.util.List;
+
 public interface IUpdateProductsDao {
 
     /**
@@ -15,4 +17,10 @@ public interface IUpdateProductsDao {
      * @param product {@link Product}
      */
     void update(Product product);
+
+    /**
+     *
+     * @param id
+     */
+    void delete(int id);
 }

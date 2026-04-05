@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ProductWriteService {
 
@@ -25,5 +27,9 @@ public class ProductWriteService {
     @Transactional
     public Product create(Product product) {
         return updateProductsDao.create(product);
+    }
+
+    public void delete(int id) {
+        updateProductsDao.delete(id);
     }
 }

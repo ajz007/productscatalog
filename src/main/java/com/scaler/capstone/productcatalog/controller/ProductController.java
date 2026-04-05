@@ -31,7 +31,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/categories")
-    public List<Product> getProductCategories() {
+    public List<Product> getProductCategories() { //TODO: remove hardcoding
         return List.of(Product.builder()
                 .withId(1)
                 .withPrice(BigDecimal.ONE)
@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/categories/{category}")
-    public List<Product> getProductCategories(@PathVariable Category category) {
+    public List<Product> getProductCategories(@PathVariable Category category) { //TODO: remove hardcoding
         return List.of(Product.builder()
                 .withId(1)
                 .withPrice(BigDecimal.ONE)
@@ -71,14 +71,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
-    public Product deleteProduct(@PathVariable int id) {
-        return Product.builder()
-                .withId(1)
-                .withPrice(BigDecimal.ONE)
-                .withImage("image")
-                .withCategory(Category.JEWELLERY)
-                .withDescription("description")
-                .withTitle("title")
-                .build();
+    public void deleteProduct(@PathVariable int id) {
+        productWriteService.delete(id);
     }
 }

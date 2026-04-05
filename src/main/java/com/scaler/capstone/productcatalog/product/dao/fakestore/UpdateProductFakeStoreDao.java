@@ -39,4 +39,9 @@ public class UpdateProductFakeStoreDao implements IUpdateProductsDao {
          template.exchange("https://fakestoreapi.com/products/" + product.getId(), HttpMethod.PUT,
                     request, FakeStoreProductDTO.class);
     }
+
+    @Override
+    public void delete(int id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
