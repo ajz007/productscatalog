@@ -1,14 +1,14 @@
 package com.scaler.capstone.productcatalog.product.dao.mysql.dao;
 
 import com.scaler.capstone.productcatalog.product.dao.IUpdateProductsDao;
-import com.scaler.capstone.productcatalog.product.dao.mysql.repo.CategoryRepository;
+import com.scaler.capstone.productcatalog.product.dao.mysql.CategoryEntity;
 import com.scaler.capstone.productcatalog.product.dao.mysql.ProductEntity;
 import com.scaler.capstone.productcatalog.product.dao.mysql.ProductEntityMapper;
+import com.scaler.capstone.productcatalog.product.dao.mysql.repo.CategoryRepository;
 import com.scaler.capstone.productcatalog.product.dao.mysql.repo.ProductRepository;
-import com.scaler.capstone.productcatalog.product.model.Category;
 import com.scaler.capstone.productcatalog.product.model.Product;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import com.scaler.capstone.productcatalog.product.service.InvalidProductException;
+import com.scaler.capstone.productcatalog.product.service.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,34 +17,53 @@ public class UpdateProductsMySqlDao implements IUpdateProductsDao {
 
     private final ProductRepository repository;
     private final CategoryRepository categoryRepository;
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
-    public UpdateProductsMySqlDao(ProductRepository repository, CategoryRepository categoryRepository, EntityManager entityManager) {
+    public UpdateProductsMySqlDao(ProductRepository repository, CategoryRepository categoryRepository) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
-        this.entityManager = entityManager;
     }
 
     @Override
-    public void update(Product product) {
-            var entity = ProductEntityMapper.fromProduct(product);
-            repository.save(entity);
+    public Product update(Product product) {
+        ProductEntity existingEntity = repository.findById(product.getId())
+                .orElseThrow(() -> new ProductNotFoundException(
+                        String.format("No product exists with id: %s", product.getId())));
+
+        existingEntity.setTitle(product.getTitle());
+        existingEntity.setPrice(product.getPrice());
+        existingEntity.setCategory(resolveCategory(product));
+        existingEntity.setDescription(product.getDescription());
+        existingEntity.setImage(product.getImage());
+
+        return ProductEntityMapper.toProduct(repository.save(existingEntity));
+    }
+
+    @Override
+    public void delete(int id) {
+        if (!repository.existsById(id)) {
+            throw new ProductNotFoundException(String.format("No product exists with id: %s", id));
+        }
+        repository.deleteById(id);
     }
 
     @Override
     public Product create(Product product) {
-        var categories = categoryRepository.getCategoryEntitiesByName(product.getCategory().name());
-        var entity = new ProductEntity(null, product.getTitle(), product.getPrice(), categories.get(0), product.getDescription(), product.getImage());
-        var savedEntity = repository.save(entity);
-        return Product.builder()
-                .withId(savedEntity.getId())
-                .withTitle(savedEntity.getTitle())
-                .withPrice(savedEntity.getPrice())
-                .withDescription(savedEntity.getDescription())
-                .withImage(savedEntity.getImage())
-                .withCategory(Category.fromString(savedEntity.getCategory().getName()))
-                .build();
+        ProductEntity entity = new ProductEntity(
+                null,
+                product.getTitle(),
+                product.getPrice(),
+                resolveCategory(product),
+                product.getDescription(),
+                product.getImage()
+        );
+        return ProductEntityMapper.toProduct(repository.save(entity));
+    }
+
+    private CategoryEntity resolveCategory(Product product) {
+        String categoryName = product.getCategory().name();
+        return categoryRepository.findByNameIgnoreCase(categoryName)
+                .orElseThrow(() -> new InvalidProductException(
+                        String.format("Category does not exist: %s", categoryName)));
     }
 }

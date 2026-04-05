@@ -11,4 +11,8 @@ public enum Category {
                 .findFirst()
                 .orElse(UNKNOWN);
     }
+
+    public boolean isUnknown() {
+        return this == UNKNOWN;
+    }
 }

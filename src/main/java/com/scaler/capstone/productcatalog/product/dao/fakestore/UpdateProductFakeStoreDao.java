@@ -30,13 +30,19 @@ public class UpdateProductFakeStoreDao implements IUpdateProductsDao {
      * {@inheritDoc}
      */
     @Override
-    public void update(Product product) {
+    public Product update(Product product) {
         var template = templateBuilder.build();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<FakeStoreProductDTO> request = new HttpEntity<>(FakeStoreMapper.mapToFakeStoreDTO(product), headers);
 
-         template.exchange("https://fakestoreapi.com/products/" + product.getId(), HttpMethod.PUT,
-                    request, FakeStoreProductDTO.class);
+        template.exchange("https://fakestoreapi.com/products/" + product.getId(), HttpMethod.PUT,
+                request, FakeStoreProductDTO.class);
+        return product;
+    }
+
+    @Override
+    public void delete(int id) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

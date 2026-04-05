@@ -25,8 +25,7 @@ public class ProductReadService {
         return getProductsDao.getProducts();
     }
 
-    public Product getProducts(String id) {
-
-        return getProductsDao.getProduct(id);
+    public Product getProduct(int id) {
+        return getProductsDao.getProduct(String.valueOf(id));
     }
 }
