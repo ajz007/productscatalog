@@ -35,6 +35,7 @@ public class UpdateProductsMySqlDao implements IUpdateProductsDao {
         existingEntity.setCategory(resolveCategory(product));
         existingEntity.setDescription(product.getDescription());
         existingEntity.setImage(product.getImage());
+        existingEntity.setStockQuantity(product.getStockQuantity());
 
         return ProductEntityMapper.toProduct(repository.save(existingEntity));
     }
@@ -55,7 +56,8 @@ public class UpdateProductsMySqlDao implements IUpdateProductsDao {
                 product.getPrice(),
                 resolveCategory(product),
                 product.getDescription(),
-                product.getImage()
+                product.getImage(),
+                product.getStockQuantity()
         );
         return ProductEntityMapper.toProduct(repository.save(entity));
     }
