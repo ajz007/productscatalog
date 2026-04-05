@@ -18,6 +18,7 @@ public class ProductEntityMapper {
                 .withCategory(Category.fromString(entity.getCategory().getName()))
                 .withDescription(entity.getDescription())
                 .withImage(entity.getImage())
+                .withStockQuantity(entity.getStockQuantity())
                 .build();
     }
 }
