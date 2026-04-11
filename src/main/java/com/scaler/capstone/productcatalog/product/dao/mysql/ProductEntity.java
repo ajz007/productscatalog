@@ -22,4 +22,5 @@ public class ProductEntity {
     private CategoryEntity category;
     private String description;
     private String image;
+    private Integer stockQuantity;
 }

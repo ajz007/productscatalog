@@ -24,5 +24,6 @@ public class Product {
     private String description;
     @Schema(example = "https://example.com/images/iphone15.jpg")
     private String image;
+    private Integer stockQuantity;
 
 }

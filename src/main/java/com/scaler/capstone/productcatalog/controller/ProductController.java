@@ -1,5 +1,7 @@
 package com.scaler.capstone.productcatalog.controller;
 
+import com.scaler.capstone.productcatalog.product.dto.PagedResponse;
+import com.scaler.capstone.productcatalog.product.dto.ProductResponse;
 import com.scaler.capstone.productcatalog.product.model.Product;
 import com.scaler.capstone.productcatalog.product.service.ProductReadService;
 import com.scaler.capstone.productcatalog.product.service.ProductWriteService;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,14 +33,26 @@ public class ProductController {
     }
 
     @GetMapping
-    @Operation(summary = "List products", description = "Returns all products currently available in the catalog.")
-    public List<Product> getProducts() {
-        return productReadService.getProducts();
+    public ResponseEntity<PagedResponse<ProductResponse>> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String category
+    ) {
+        return ResponseEntity.ok(
+                productReadService.getProducts(page, size, sortBy, direction, search, category)
+        );
+    }
+
+    @GetMapping("/categories")
+    public List<String> getCategories() {
+        return productReadService.getCategories();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get product details", description = "Returns a single product by id.")
-    public Product getProduct(@PathVariable int id) {
+    public ProductResponse getProduct(@PathVariable int id) {
         return productReadService.getProduct(id);
     }
 
