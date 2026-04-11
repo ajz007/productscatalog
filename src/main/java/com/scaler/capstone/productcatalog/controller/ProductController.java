@@ -6,7 +6,9 @@ import com.scaler.capstone.productcatalog.product.model.Product;
 import com.scaler.capstone.productcatalog.product.service.ProductReadService;
 import com.scaler.capstone.productcatalog.product.service.ProductWriteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,12 +35,22 @@ public class ProductController {
     }
 
     @GetMapping
+    @Operation(
+            summary = "List products",
+            description = "Returns paginated products with optional sorting, search text, and category filtering."
+    )
     public ResponseEntity<PagedResponse<ProductResponse>> getProducts(
+            @Parameter(description = "Zero-based page number", example = "0")
             @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size", example = "10")
             @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Sortable field", example = "id")
             @RequestParam(defaultValue = "id") String sortBy,
+            @Parameter(description = "Sort direction", example = "asc")
             @RequestParam(defaultValue = "asc") String direction,
+            @Parameter(description = "Search text across title and description", example = "iphone")
             @RequestParam(required = false) String search,
+            @Parameter(description = "Category filter", example = "electronics")
             @RequestParam(required = false) String category
     ) {
         return ResponseEntity.ok(
@@ -47,11 +59,13 @@ public class ProductController {
     }
 
     @GetMapping("/categories")
+    @Operation(summary = "List categories", description = "Returns all product categories available in the database.")
     public List<String> getCategories() {
         return productReadService.getCategories();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get product details", description = "Returns a single product by id.")
     public ProductResponse getProduct(@PathVariable int id) {
         return productReadService.getProduct(id);
     }
