@@ -17,9 +17,16 @@ public class ProductWriteService {
         this.updateProductsDao = updateProductsDao;
     }
 
-    public Product update(Product product) {
-        validate(product, true);
-        return updateProductsDao.update(product);
+    public Product update(int id, Product product) {
+        if (product == null) {
+            throw new InvalidProductException("Product payload is required");
+        }
+
+        Product productWithId = product.toBuilder()
+                .withId(id)
+                .build();
+        validate(productWithId, true);
+        return updateProductsDao.update(productWithId);
     }
 
     @Transactional

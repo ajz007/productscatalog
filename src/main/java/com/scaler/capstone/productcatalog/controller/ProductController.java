@@ -7,6 +7,7 @@ import com.scaler.capstone.productcatalog.product.service.ProductReadService;
 import com.scaler.capstone.productcatalog.product.service.ProductWriteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 @Tag(name = "Products", description = "Product catalog query and maintenance endpoints")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
     private final ProductReadService productReadService;
@@ -37,7 +39,11 @@ public class ProductController {
     @GetMapping
     @Operation(
             summary = "List products",
-            description = "Returns paginated products with optional sorting, search text, and category filtering."
+            description = """
+                    Returns all products by default, with optional sorting, search text, and category filtering.
+                    Examples: `/products?search=iphone`, `/products?category=electronics`,
+                    `/products?page=0&size=10&sortBy=price&direction=desc`.
+                    """
     )
     public ResponseEntity<PagedResponse<ProductResponse>> getProducts(
             @Parameter(description = "Zero-based page number", example = "0")
@@ -48,9 +54,9 @@ public class ProductController {
             @RequestParam(defaultValue = "id") String sortBy,
             @Parameter(description = "Sort direction", example = "asc")
             @RequestParam(defaultValue = "asc") String direction,
-            @Parameter(description = "Search text across title and description", example = "iphone")
+            @Parameter(description = "Optional search text across title and description. Example: iphone")
             @RequestParam(required = false) String search,
-            @Parameter(description = "Category filter", example = "electronics")
+            @Parameter(description = "Optional category filter. Example: electronics")
             @RequestParam(required = false) String category
     ) {
         return ResponseEntity.ok(
@@ -66,7 +72,9 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get product details", description = "Returns a single product by id.")
-    public ProductResponse getProduct(@PathVariable int id) {
+    public ProductResponse getProduct(
+            @Parameter(description = "Product id", example = "1") @PathVariable int id
+    ) {
         return productReadService.getProduct(id);
     }
 
@@ -78,14 +86,18 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a product", description = "Updates an existing product by id.")
-    public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
-        product.setId(id);
-        return productWriteService.update(product);
+    public Product updateProduct(
+            @Parameter(description = "Product id", example = "1") @PathVariable int id,
+            @RequestBody Product product
+    ) {
+        return productWriteService.update(id, product);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a product", description = "Deletes a product by id.")
-    public void deleteProduct(@PathVariable int id) {
+    public void deleteProduct(
+            @Parameter(description = "Product id", example = "1") @PathVariable int id
+    ) {
         productWriteService.delete(id);
     }
 }
